@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check src/ tests/
+      - run: ruff format --check src/ tests/
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: pytest -v
+
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      opensearch:
+        image: opensearchproject/opensearch:2.18.0
+        ports:
+          - 9200:9200
+        env:
+          discovery.type: single-node
+          DISABLE_SECURITY_PLUGIN: "true"
+        options: >-
+          --health-cmd "curl -sf http://localhost:9200/_cluster/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - name: Seed test data
+        run: |
+          curl -s -X PUT "localhost:9200/dead-index-2024.01" \
+            -H 'Content-Type: application/json' \
+            -d '{"settings":{"number_of_shards":1,"number_of_replicas":0}}'
+          curl -s -X POST "localhost:9200/dead-index-2024.01/_doc" \
+            -H 'Content-Type: application/json' -d '{"msg":"old"}'
+          curl -s -X PUT "localhost:9200/over-sharded" \
+            -H 'Content-Type: application/json' \
+            -d '{"settings":{"number_of_shards":10,"number_of_replicas":0}}'
+          curl -s -X POST "localhost:9200/over-sharded/_doc" \
+            -H 'Content-Type: application/json' -d '{"msg":"tiny"}'
+          # Wait for indexing
+          curl -s -X POST "localhost:9200/_refresh"
+      - name: Run prunr scan
+        run: prunr scan --host http://localhost:9200 --json report.json
+      - name: Verify JSON report
+        run: python -c "import json; r=json.load(open('report.json')); assert len(r['recommendations'])>0, 'No recs found'"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scan-report
+          path: report.json

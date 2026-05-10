@@ -1,0 +1,733 @@
+{
+  "scan_timestamp": "2026-04-13 01:45:38 UTC",
+  "cost_per_gb_month": 0.1,
+  "cluster": {
+    "name": "prod-logging-cluster",
+    "node_count": 12,
+    "total_indices": 30,
+    "total_size_bytes": 133416640503,
+    "total_size_gb": 124.25,
+    "total_docs": 1609750033
+  },
+  "cost": {
+    "estimated_monthly": 12.43,
+    "estimated_annual": 149.1,
+    "estimated_annual_waste": 27.24
+  },
+  "summary": [
+    "5% of storage (6.7 GB) is in indices with no search activity",
+    "2 index families appear to contain duplicate data (7 indices)",
+    "3 indices are over-sharded: 260 shards hold only 260 MB of data",
+    "Estimated $27/year recoverable through recommended actions"
+  ],
+  "recommendations": [
+    {
+      "action": "REVIEW",
+      "target": "nginx-* (multiple patterns)",
+      "confidence": "LOW",
+      "reasons": [
+        "Service 'nginx' appears in 2 different index patterns:",
+        "  - nginx-access",
+        "  - nginx-logs",
+        "Combined size: 24.8 GB",
+        "These may contain overlapping data from multiple pipelines"
+      ],
+      "size_bytes": 26628797233,
+      "size_gb": 24.8,
+      "annual_savings": 14.88,
+      "index_count": 5
+    },
+    {
+      "action": "DELETE",
+      "target": "filebeat-debug-* (3 indices)",
+      "confidence": "HIGH",
+      "reasons": [
+        "3 indices in family 'filebeat-debug-*'",
+        "Combined size: 5.4 GB",
+        "No search activity detected",
+        "14,500,000 docs indexed historically, but not actively writing",
+        "Indices: filebeat-debug-2025.01, filebeat-debug-2025.02, filebeat-debug-2025.03"
+      ],
+      "size_bytes": 5798205849,
+      "size_gb": 5.4,
+      "annual_savings": 6.48,
+      "index_count": 3
+    },
+    {
+      "action": "REVIEW",
+      "target": "app-* (multiple patterns)",
+      "confidence": "LOW",
+      "reasons": [
+        "Service 'app' appears in 2 different index patterns:",
+        "  - app-logs-v1",
+        "  - app-logs-v2",
+        "Combined size: 7.2 GB",
+        "These may contain overlapping data from multiple pipelines"
+      ],
+      "size_bytes": 7730941132,
+      "size_gb": 7.2,
+      "annual_savings": 4.32,
+      "index_count": 2
+    },
+    {
+      "action": "DELETE",
+      "target": "app-debug-2025.02",
+      "confidence": "HIGH",
+      "reasons": [
+        "No search activity detected",
+        "6,800,000 docs indexed historically, but not actively writing",
+        "Index name matches low-value pattern: app-debug-2025.02",
+        "Small index (0.9 GB)"
+      ],
+      "size_bytes": 966367641,
+      "size_gb": 0.9,
+      "annual_savings": 1.08,
+      "index_count": 1
+    },
+    {
+      "action": "DELETE",
+      "target": "test-runner-logs-2025.01",
+      "confidence": "HIGH",
+      "reasons": [
+        "No search activity detected",
+        "2,100,000 docs indexed historically, but not actively writing",
+        "Index name matches low-value pattern: test-runner-logs-2025.01",
+        "Small index (0.4 GB)"
+      ],
+      "size_bytes": 429496729,
+      "size_gb": 0.4,
+      "annual_savings": 0.48,
+      "index_count": 1
+    },
+    {
+      "action": "DELETE",
+      "target": "tmp-test-import-002",
+      "confidence": "LOW",
+      "reasons": [
+        "No search activity detected",
+        "18 docs indexed historically, but not actively writing",
+        "Index name matches low-value pattern: tmp-test-import-002",
+        "Small index (0.0 GB)",
+        "Small index \u2014 low priority"
+      ],
+      "size_bytes": 12288,
+      "size_gb": 0.0,
+      "annual_savings": 0.0,
+      "index_count": 1
+    },
+    {
+      "action": "DELETE",
+      "target": "tmp-test-import-001",
+      "confidence": "LOW",
+      "reasons": [
+        "No search activity detected",
+        "12 docs indexed historically, but not actively writing",
+        "Index name matches low-value pattern: tmp-test-import-001",
+        "Small index (0.0 GB)",
+        "Small index \u2014 low priority"
+      ],
+      "size_bytes": 8192,
+      "size_gb": 0.0,
+      "annual_savings": 0.0,
+      "index_count": 1
+    },
+    {
+      "action": "DELETE",
+      "target": "oneoff-migration-check",
+      "confidence": "LOW",
+      "reasons": [
+        "No search activity detected",
+        "3 docs indexed historically, but not actively writing",
+        "Small index (0.0 GB)",
+        "Small index \u2014 low priority"
+      ],
+      "size_bytes": 4096,
+      "size_gb": 0.0,
+      "annual_savings": 0.0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "trace-raw-2026.04.02",
+      "confidence": "HIGH",
+      "reasons": [
+        "100 shards averaging 1 MB each",
+        "Recommended: ~1 shards @ ~30 GB each",
+        "Over-sharding wastes cluster memory and slows queries",
+        "Read-only optimization \u2014 no data loss"
+      ],
+      "size_bytes": 125829120,
+      "size_gb": 0.12,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "trace-raw-2026.04.01",
+      "confidence": "HIGH",
+      "reasons": [
+        "100 shards averaging 1 MB each",
+        "Recommended: ~1 shards @ ~30 GB each",
+        "Over-sharding wastes cluster memory and slows queries",
+        "Read-only optimization \u2014 no data loss"
+      ],
+      "size_bytes": 104857600,
+      "size_gb": 0.1,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "audit-small-2026.04.01",
+      "confidence": "HIGH",
+      "reasons": [
+        "60 shards averaging 1 MB each",
+        "Recommended: ~1 shards @ ~30 GB each",
+        "Over-sharding wastes cluster memory and slows queries",
+        "Read-only optimization \u2014 no data loss"
+      ],
+      "size_bytes": 41943040,
+      "size_gb": 0.04,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "nginx-access-2025.03",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 492 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 5153960755,
+      "size_gb": 4.8,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "nginx-access-2025.02",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 461 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 4831838208,
+      "size_gb": 4.5,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "nginx-access-2025.01",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 430 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 4509715660,
+      "size_gb": 4.2,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "api-access-2025.04",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 389 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 4080218931,
+      "size_gb": 3.8,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "api-access-2025.03",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 369 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 3865470566,
+      "size_gb": 3.6,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "api-access-2025.02",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 348 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 3650722201,
+      "size_gb": 3.4,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "api-access-2025.01",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "10 shards averaging 317 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 3328599654,
+      "size_gb": 3.1,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "security-audit-2025.03",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "6 shards averaging 478 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 3006477107,
+      "size_gb": 2.8,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "MERGE SHARDS",
+      "target": "pci-audit-2025.q1",
+      "confidence": "MEDIUM",
+      "reasons": [
+        "6 shards averaging 273 MB each",
+        "Small shards add unnecessary cluster overhead"
+      ],
+      "size_bytes": 1717986918,
+      "size_gb": 1.6,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "REVIEW",
+      "target": "big-analytics-archive",
+      "confidence": "LOW",
+      "reasons": [
+        "Uses 6.8% of total cluster storage (8.4 GB)",
+        "Query density: 33.3 queries per GB",
+        "No active write activity \u2014 may be stale data"
+      ],
+      "size_bytes": 9019431321,
+      "size_gb": 8.4,
+      "annual_savings": 0,
+      "index_count": 1
+    },
+    {
+      "action": "REVIEW",
+      "target": "auth-audit-archive-2024",
+      "confidence": "LOW",
+      "reasons": [
+        "Index name suggests audit or compliance data",
+        "Low query activity (8 queries observed)",
+        "Size: 4.1 GB",
+        "May be subject to regulatory retention requirements \u2014 verify before deletion"
+      ],
+      "size_bytes": 4402341478,
+      "size_gb": 4.1,
+      "annual_savings": 0,
+      "index_count": 1
+    }
+  ],
+  "indices": [
+    {
+      "name": "app-prod-logs-2026.04",
+      "size_bytes": 30064771072,
+      "size_gb": 28.0,
+      "doc_count": 420000000,
+      "query_total": 185000,
+      "query_rate": 15.0,
+      "indexing_rate": 8000.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 7168.0,
+      "health": "green"
+    },
+    {
+      "name": "payments-prod-logs-2026.04",
+      "size_bytes": 13421772800,
+      "size_gb": 12.5,
+      "doc_count": 95000000,
+      "query_total": 312000,
+      "query_rate": 15.0,
+      "indexing_rate": 8000.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 3200.0,
+      "health": "green"
+    },
+    {
+      "name": "big-analytics-archive",
+      "size_bytes": 9019431321,
+      "size_gb": 8.4,
+      "doc_count": 125000000,
+      "query_total": 280,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 860.2,
+      "health": "green"
+    },
+    {
+      "name": "auth-prod-logs-2026.04",
+      "size_bytes": 8804682956,
+      "size_gb": 8.2,
+      "doc_count": 64000000,
+      "query_total": 224000,
+      "query_rate": 15.0,
+      "indexing_rate": 8000.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 2099.2,
+      "health": "green"
+    },
+    {
+      "name": "nginx-logs-2026.04",
+      "size_bytes": 6657199308,
+      "size_gb": 6.2,
+      "doc_count": 48000000,
+      "query_total": 4200,
+      "query_rate": 0.2,
+      "indexing_rate": 400.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 1058.1,
+      "health": "green"
+    },
+    {
+      "name": "filebeat-nginx-2026.04",
+      "size_bytes": 6227702579,
+      "size_gb": 5.8,
+      "doc_count": 45000000,
+      "query_total": 1800,
+      "query_rate": 0.2,
+      "indexing_rate": 400.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 989.9,
+      "health": "green"
+    },
+    {
+      "name": "nginx-access-2025.04",
+      "size_bytes": 5476083302,
+      "size_gb": 5.1,
+      "doc_count": 102000000,
+      "query_total": 28400,
+      "query_rate": 0.5,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 522.2,
+      "health": "green"
+    },
+    {
+      "name": "nginx-access-2025.03",
+      "size_bytes": 5153960755,
+      "size_gb": 4.8,
+      "doc_count": 96000000,
+      "query_total": 340,
+      "query_rate": 0.5,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 491.5,
+      "health": "green"
+    },
+    {
+      "name": "nginx-access-2025.02",
+      "size_bytes": 4831838208,
+      "size_gb": 4.5,
+      "doc_count": 91000000,
+      "query_total": 48,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 460.8,
+      "health": "green"
+    },
+    {
+      "name": "nginx-access-2025.01",
+      "size_bytes": 4509715660,
+      "size_gb": 4.2,
+      "doc_count": 85000000,
+      "query_total": 12,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 430.1,
+      "health": "green"
+    },
+    {
+      "name": "auth-audit-archive-2024",
+      "size_bytes": 4402341478,
+      "size_gb": 4.1,
+      "doc_count": 32000000,
+      "query_total": 8,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 699.7,
+      "health": "green"
+    },
+    {
+      "name": "api-access-2025.04",
+      "size_bytes": 4080218931,
+      "size_gb": 3.8,
+      "doc_count": 76000000,
+      "query_total": 18600,
+      "query_rate": 0.5,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 389.1,
+      "health": "green"
+    },
+    {
+      "name": "app-logs-v2",
+      "size_bytes": 4080218931,
+      "size_gb": 3.8,
+      "doc_count": 28000000,
+      "query_total": 12400,
+      "query_rate": 0.2,
+      "indexing_rate": 400.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 648.5,
+      "health": "green"
+    },
+    {
+      "name": "api-access-2025.03",
+      "size_bytes": 3865470566,
+      "size_gb": 3.6,
+      "doc_count": 72000000,
+      "query_total": 180,
+      "query_rate": 0.5,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 368.6,
+      "health": "green"
+    },
+    {
+      "name": "api-access-2025.02",
+      "size_bytes": 3650722201,
+      "size_gb": 3.4,
+      "doc_count": 68000000,
+      "query_total": 22,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 348.2,
+      "health": "green"
+    },
+    {
+      "name": "app-logs-v1",
+      "size_bytes": 3650722201,
+      "size_gb": 3.4,
+      "doc_count": 26000000,
+      "query_total": 320,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 580.3,
+      "health": "green"
+    },
+    {
+      "name": "api-access-2025.01",
+      "size_bytes": 3328599654,
+      "size_gb": 3.1,
+      "doc_count": 62000000,
+      "query_total": 5,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 5,
+      "total_shards": 10,
+      "avg_shard_size_mb": 317.4,
+      "health": "green"
+    },
+    {
+      "name": "security-audit-2025.03",
+      "size_bytes": 3006477107,
+      "size_gb": 2.8,
+      "doc_count": 18000000,
+      "query_total": 45,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 477.9,
+      "health": "green"
+    },
+    {
+      "name": "filebeat-debug-2025.02",
+      "size_bytes": 2254857830,
+      "size_gb": 2.1,
+      "doc_count": 14500000,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 537.6,
+      "health": "green"
+    },
+    {
+      "name": "filebeat-debug-2025.01",
+      "size_bytes": 1932735283,
+      "size_gb": 1.8,
+      "doc_count": 12000000,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 460.8,
+      "health": "green"
+    },
+    {
+      "name": "pci-audit-2025.q1",
+      "size_bytes": 1717986918,
+      "size_gb": 1.6,
+      "doc_count": 9200000,
+      "query_total": 12,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 3,
+      "total_shards": 6,
+      "avg_shard_size_mb": 273.1,
+      "health": "green"
+    },
+    {
+      "name": "filebeat-debug-2025.03",
+      "size_bytes": 1610612736,
+      "size_gb": 1.5,
+      "doc_count": 10200000,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 384.0,
+      "health": "green"
+    },
+    {
+      "name": "app-debug-2025.02",
+      "size_bytes": 966367641,
+      "size_gb": 0.9,
+      "doc_count": 6800000,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 230.4,
+      "health": "green"
+    },
+    {
+      "name": "test-runner-logs-2025.01",
+      "size_bytes": 429496729,
+      "size_gb": 0.4,
+      "doc_count": 2100000,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 2,
+      "total_shards": 4,
+      "avg_shard_size_mb": 102.4,
+      "health": "green"
+    },
+    {
+      "name": "trace-raw-2026.04.02",
+      "size_bytes": 125829120,
+      "size_gb": 0.12,
+      "doc_count": 920000,
+      "query_total": 8500,
+      "query_rate": 1.0,
+      "indexing_rate": 200.0,
+      "primary_shards": 50,
+      "total_shards": 100,
+      "avg_shard_size_mb": 1.2,
+      "health": "green"
+    },
+    {
+      "name": "trace-raw-2026.04.01",
+      "size_bytes": 104857600,
+      "size_gb": 0.1,
+      "doc_count": 850000,
+      "query_total": 8500,
+      "query_rate": 1.0,
+      "indexing_rate": 200.0,
+      "primary_shards": 50,
+      "total_shards": 100,
+      "avg_shard_size_mb": 1.0,
+      "health": "green"
+    },
+    {
+      "name": "audit-small-2026.04.01",
+      "size_bytes": 41943040,
+      "size_gb": 0.04,
+      "doc_count": 180000,
+      "query_total": 8500,
+      "query_rate": 1.0,
+      "indexing_rate": 200.0,
+      "primary_shards": 30,
+      "total_shards": 60,
+      "avg_shard_size_mb": 0.7,
+      "health": "green"
+    },
+    {
+      "name": "tmp-test-import-002",
+      "size_bytes": 12288,
+      "size_gb": 0.0,
+      "doc_count": 18,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 1,
+      "total_shards": 1,
+      "avg_shard_size_mb": 0.0,
+      "health": "green"
+    },
+    {
+      "name": "tmp-test-import-001",
+      "size_bytes": 8192,
+      "size_gb": 0.0,
+      "doc_count": 12,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 1,
+      "total_shards": 1,
+      "avg_shard_size_mb": 0.0,
+      "health": "green"
+    },
+    {
+      "name": "oneoff-migration-check",
+      "size_bytes": 4096,
+      "size_gb": 0.0,
+      "doc_count": 3,
+      "query_total": 0,
+      "query_rate": 0.0,
+      "indexing_rate": 0.0,
+      "primary_shards": 1,
+      "total_shards": 1,
+      "avg_shard_size_mb": 0.0,
+      "health": "green"
+    }
+  ]
+}

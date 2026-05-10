@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prunr"
+version = "0.1.2"
+description = "Scan your Elasticsearch/OpenSearch cluster. Find dead indices, wasted storage, and cost savings."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+authors = [{ name = "Ricky Ma", email = "ricky.rui.ma@gmail.com" }]
+keywords = ["elasticsearch", "opensearch", "cost", "optimization", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "urllib3>=2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[project.scripts]
+prunr = "prunr.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/rickyruima/prunr"
+Issues = "https://github.com/rickyruima/prunr/issues"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
