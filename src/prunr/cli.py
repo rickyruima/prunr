@@ -18,6 +18,7 @@ from .snapshot import load_snapshot, save_snapshot
 from .models import ScanReport
 from .report import terminal
 from .report import json_report
+from .report import html_report
 
 
 @click.group()
@@ -39,7 +40,7 @@ def main():
 @click.option(
     "--format",
     "output_format",
-    type=click.Choice(["terminal", "json"]),
+    type=click.Choice(["terminal", "json", "html"]),
     default="terminal",
     help="Output format",
 )
@@ -135,6 +136,12 @@ def scan(
             console.print(output)
         else:
             console.print(f"[green]Report saved to {output_path}[/]")
+    elif output_format == "html":
+        output = html_report.render(report, output_path)
+        if not output_path:
+            console.print(output)
+        else:
+            console.print(f"[green]HTML report saved to {output_path}[/]")
     else:
         terminal.render(report, console)
         if output_path:
